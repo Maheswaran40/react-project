@@ -2,6 +2,8 @@
 import React, { useState,useEffect } from 'react';
 import Mycontext from './Mycontext';
 import fashonboys from "../assets/images/fashon-boys-lineup.jpg"
+import { all_product } from '../assets/Image';
+// import { useParams } from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
 
 function Context({ children }) {
@@ -65,8 +67,30 @@ function Context({ children }) {
     //   navigation("/shop/dress")
     // }
 
+    // search fun start
 
-  const mycontextValue = { activeTab, missionFun, connectFun,aboutFun, storyFun, }; //cardFun
+     var[searchdata,setData]=useState( )
+ function searchFun(e){
+  e.preventDefault()
+  console.log(searchdata);
+  
+ }
+ function seacrhInput(e){
+   const input = e.target.value.toLowerCase();
+    setData(input);
+    console.log(input);
+}
+ const filteredItems =searchdata ?( all_product.filter((value) =>
+    value.item.toLowerCase().includes(searchdata)
+  ) ): '';
+
+    // search fun end
+    // like start
+ 
+    // like end
+
+
+  const mycontextValue = { activeTab, missionFun, connectFun,aboutFun, storyFun, searchFun,seacrhInput,filteredItems,setData,searchdata}; //cardFun
 
   return (
     <Mycontext.Provider value={mycontextValue}>

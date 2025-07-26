@@ -17,6 +17,7 @@ select{
     --graygreen:#A89C29;
     /* #FBA518 #F9CB43 #A89C29 */
 }
+
 #clip{
     color: var(--redcolor);
    margin-left: 20px;
@@ -212,6 +213,13 @@ iframe{
     font-size: large;
     color: gray ;
 }
+/* shop page  start*/
+
+.collapse-div{
+    color:gray;
+}
+
+/* shop page end */
 
 
 @media screen and (max-width:425px) {
@@ -274,6 +282,10 @@ iframe{
 }
 .product-container::-webkit-scrollbar-thumb {
   background-color: red;
+}
+#selectProduct-img{
+    width: 250px !important;
+    height: 300px !important;
 }
 
 /* product page end */

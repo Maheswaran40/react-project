@@ -1,6 +1,7 @@
 import React from "react";
 import {  useParams } from "react-router-dom";
 import { all_product } from "../assets/Image";
+import Mycontext from "../contextfile/Mycontext";
 
 function Product() {
    var { navid } = useParams()
@@ -8,7 +9,7 @@ function Product() {
     const selectProduct = all_product.find((value) => value.id === Number(navid))
   return (
     <>
-    <div className="product-container">
+    <div className="product-container" style={{zIndex:"1"}}>
         <div className="container " >
           {/* row div */}
           <div
@@ -30,7 +31,7 @@ function Product() {
                   justifyContent: "center",
                   alignItems: "center",
                 }}>
-                <img
+                <img id="selectProduct-img"
                   src={selectProduct.img}
                   style={{
                     position: "absolute",
@@ -43,7 +44,7 @@ function Product() {
             <div className="col-lg-6 col-sm-12 " >
               <div
                 className="p-2"
-                style={{ position: "relative", top: "100px" }}>
+                style={{ position: "relative", top: "25px" }}>
                   {/* Product details */}
                     <div>
                       <h1>{selectProduct.item}</h1>

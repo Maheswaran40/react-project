@@ -94,13 +94,12 @@ function New_arrivals() {
                          spaceBetween={10}
                           modules={[Navigation,Autoplay]}
                           autoplay={{delay:2000}}
-                           breakpoints={{320:{slidesPerView:2},768:{slidesPerView:3},1024: { slidesPerView: 6}}}
-                          navigation
+                           breakpoints={{320:{slidesPerView:3},768:{slidesPerView:3},1024: { slidesPerView: 6}}}
                           loop
                 >
                     {allBrands.map((value)=>(
                   <SwiperSlide>
-                    <div style={{paddingLeft:"60px"}} >
+                    <div >
                         <img src={value.img} alt="" style={{width:"100px",height:"70px"}}/>
                     </div>
                   </SwiperSlide>

@@ -1,7 +1,7 @@
 import React from "react";
 import { all_product } from "../../assets/Image";
 import {Swiper,SwiperSlide}from "swiper/react"
-import {Navigation}from "swiper/modules"
+import {Navigation,Autoplay}from "swiper/modules"
 import "swiper/css"
 import "swiper/css/navigation"
 import "../../index.css"
@@ -19,9 +19,10 @@ function Home_Swiper() {
         <Swiper
           spaceBetween={10}
           slidesPerView={3}
-          modules={[Navigation]}
-           breakpoints={{  320:{slidesPerView:1},768:{slidesPerView:2}  }}
+          modules={[Navigation,Autoplay]}
           navigation
+          autoplay={{delay:3000}}
+           breakpoints={{  320:{slidesPerView:1},768:{slidesPerView:2}  }}
           loop
         >
           {/* .filter((value)=>value.catagery==="shop"). */}
