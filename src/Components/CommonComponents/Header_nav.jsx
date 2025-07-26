@@ -8,6 +8,7 @@ function Header_nav() {
   const navigate = useNavigate();
   var { searchFun, seacrhInput, filteredItems, searchdata, setData } = useContext(Mycontext);
 
+  // search fun start
   var [show, setShow] = useState(false);
   const handleClose = () => {
     setShow(false);
@@ -22,6 +23,8 @@ function Header_nav() {
   const closeOffcanvas = () => {
     setShow(false);
   };
+  // search fun start
+
 
   return (
     <>
@@ -259,7 +262,6 @@ function Header_nav() {
             <button className="btn btn-close" onClick={closeOffcanvas}></button>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            {" "}
             <form action="" className="input-group" onSubmit={searchFun}>
               <input
                 type="text"

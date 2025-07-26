@@ -90,7 +90,7 @@ function Context({ children }) {
     // like end
 
 
-  const mycontextValue = { activeTab, missionFun, connectFun,aboutFun, storyFun, searchFun,seacrhInput,filteredItems,setData,searchdata}; //cardFun
+  const mycontextValue = { activeTab, missionFun, connectFun,aboutFun, storyFun, searchFun,seacrhInput,filteredItems,setData,searchdata};
 
   return (
     <Mycontext.Provider value={mycontextValue}>
