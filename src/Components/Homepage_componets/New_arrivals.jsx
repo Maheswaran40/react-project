@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import heroimg from "../../assets/images/hero-face-img.jpg";
 import bagimg from "../../assets/images/travel-bag.webp";
 import fashonlady from "../../assets/images/fashon-lady.png"
@@ -10,10 +10,12 @@ import "swiper/css"
 import {Navigation}from "swiper/modules"
 import "swiper/css/navigation"
 import { Autoplay } from 'swiper/modules';
+import Mycontext from "../../contextfile/Mycontext";
 
 
 function New_arrivals() {
   const navigate = useNavigate()
+  var {likeFun,list,cartFun}=useContext(Mycontext)
   return (
     <>
       <div className="container">{/* container start */}
@@ -26,7 +28,7 @@ function New_arrivals() {
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
             position:"relative"}}>
-              <div id="offerdiv"> <h1>Trending Collection with <span style={{color:"#E52020"}}>50%</span>Offer</h1> <button className="btn btn-dark text-white position-absolute ">Shop Now</button> </div>
+              <div id="offerdiv"> <h1>Trending Collection with <span style={{color:"#E52020"}}>50%</span>Offer</h1> <button className="btn btn-dark text-white position-absolute " onClick={()=>navigate('/shop')}>Shop Now</button> </div>
         </div>
           {/* hero sub img div 1 */}
           <div className="row d-flex m-0 pt-2 justify-content-between">
@@ -41,7 +43,7 @@ function New_arrivals() {
             margin:"10px 0"
           }}
           className="col-lg-6 p-0"
-        > <div id="offerdiv-sub1"> <h3>Torust Bags with <span style={{color:"#E52020"}}>30%</span>Offer</h3> <button className="btn btn-dark text-white position-absolute ">Shop Now</button> </div>
+        > <div id="offerdiv-sub1"> <h3>Torust Bags with <span style={{color:"#E52020"}}>30%</span>Offer</h3> <button className="btn btn-dark text-white position-absolute "  onClick={()=>navigate('/shop')}>Shop Now</button> </div>
         </div>
            {/* hero sub img div 1 */}
           <div id="sub-hero-img-2" style={{
@@ -54,7 +56,7 @@ function New_arrivals() {
 
            
           }} className="col-lg-6 ps-5">
-             <div id="offerdiv-sub2"> <h3>Trending tops with <span style={{color:"#E52020"}}>20%</span>Offer</h3> <button className="btn btn-dark text-white position-absolute ">Shop Now</button> </div>
+             <div id="offerdiv-sub2"> <h3>Trending tops with <span style={{color:"#E52020"}}>20%</span>Offer</h3> <button className="btn btn-dark text-white position-absolute "  onClick={()=>navigate('/shop')}>Shop Now</button> </div>
           </div>
           </div>{/* heroimg end*/}
           <br />
@@ -71,10 +73,11 @@ function New_arrivals() {
                     <img  src={value.img} onClick={() => navigate(`/shop/${value.id}`) } alt="image" className="py-3 mapping-img"  height="300" width="200"/>    
                   </center>  
                    <div className="mapping-nav-icons">
-         <span> <i className="fa-regular fa-heart"></i></span><br />
-         <span> <i className="fa-solid fa-cart-shopping"></i></span>
+         <span onClick={()=>likeFun(value.id)}style={list.some((item) => item.id === value.id) ? { color: "white",backgroundColor:"#E52020" } : { color: "black" }}>
+           <i className="fa-regular fa-heart"></i></span><br />
+         <span onClick={()=>cartFun(value.id)}> <i className="fa-solid fa-cart-shopping"></i></span>
         </div>            
-                    <div className="card-footer"><span style={{color:"#E52020"}}>Name : </span>{value.item} <br /><span style={{color:"#E52020"}}>Price : </span>{value.price}</div>
+                    <div className="card-footer"><span style={{color:"#E52020"}}>Name : </span>{value.item} <br /><span style={{color:"#E52020"}}>Price : </span>{value.price} </div>
                   </div>
                 </div>
               )

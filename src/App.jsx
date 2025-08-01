@@ -11,12 +11,14 @@ import Header_nav from './Components/CommonComponents/Header_nav'
 import Footer from './Components/CommonComponents/Footer'
 import Context from './contextfile/context' 
 import Product from './pages/Product'
+import Scrolltop from './pages/Scrolltop'
 function App() {
 
   return (
     <>
         <Context>
       <BrowserRouter>
+      <Scrolltop />
     <Header_nav/>
       <Routes>
         <Route path='/' element={<Home/>} />
@@ -28,8 +30,32 @@ function App() {
         <Route path='*' element={<Error/>} />
       </Routes>
       <Footer/>
+      <div id="navtop" style={{width:"100vw", position: "fixed",bottom:"100px", zIndex : '1'}}>
+          <a
+            href="#"
+            style={{
+              textDecoration: "none",
+              color: "white",
+              textAlign: "center",
+              fontSize: "small",
+               height: "50px",
+            width: "50px",
+            backgroundColor: "#A89C29",
+            position: "absolute",
+            right: "50px",
+            top: "10px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "50px",
+            }}
+          >
+           <i className="fa-solid fa-arrow-up"></i>
+          </a>
+      </div>
       </BrowserRouter>
         </Context>
+          
     </>
   )
 }

@@ -6,7 +6,16 @@ import { Offcanvas } from "react-bootstrap";
 
 function Header_nav() {
   const navigate = useNavigate();
-  var { searchFun, seacrhInput, filteredItems, searchdata, setData } = useContext(Mycontext);
+  var {
+    searchFun,
+    seacrhInput,
+    filteredItems,
+    searchdata,
+    setData,
+    list,
+    deleteFun,
+    cartlist,deleteCart,price,quanI,quand
+  } = useContext(Mycontext);
 
   // search fun start
   var [show, setShow] = useState(false);
@@ -24,7 +33,6 @@ function Header_nav() {
     setShow(false);
   };
   // search fun start
-
 
   return (
     <>
@@ -214,11 +222,30 @@ function Header_nav() {
           >
             <i className="fa-solid fa-magnifying-glass nav-icon"></i>
           </span>
-          <span data-bs-toggle="offcanvas" data-bs-target="#like-canvas">
-            <i className="fa-regular fa-heart nav-icon"></i>
+          <span
+            data-bs-toggle="offcanvas"
+            data-bs-target="#like-canvas"
+            className="position-relative"
+          >
+            <i
+              className="fa-regular fa-heart nav-icon"
+              style={list.length > 0 ? { color: "red" } :null}
+            ></i>
+           {list.length >0 ? <span
+              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              style={{
+                width: "10px",
+                height: "15px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {list.length}
+            </span> : null} 
           </span>
           <span data-bs-toggle="offcanvas" data-bs-target="#cart-canvas">
-            <i className="fa-solid fa-cart-shopping nav-icon"></i>
+            <i className="fa-solid fa-cart-shopping nav-icon" style={cartlist.length > 0 ? { color: "green" } :null}></i>
           </span>
         </div>
         {/* icons end */}
@@ -238,15 +265,56 @@ function Header_nav() {
         </div>
 
         {/* like model */}
-        <div className="offcanvas offcanvas-end" id="like-canvas">
+        <div
+          className="offcanvas offcanvas-top"
+          id="like-canvas"
+          style={{ height: "500px" }}
+        >
           <div className="offcanvas-header">
-            <h1>Like</h1>
+            <h1 style={{ color: "#E52020" }}>Liked Product List</h1>
             <button
               className="btn btn-close"
               data-bs-dismiss="offcanvas"
             ></button>
           </div>
-          <div className="offcanvas-body">hi</div>
+          <div className="offcanvas-body">
+            <table className="container table border-primary table-bordered text-center p-5 mt-2">
+              <thead>
+                <tr>
+                  <td>Product Name</td>
+                  <td>Product</td>
+                  <td>Price</td>
+                  <td>Action</td>
+                </tr>
+              </thead>
+              <tbody>
+                {list.map((value, index) => (
+                  <tr key={index}>
+                    <td align="center" valign="middle">
+                      {value.item}
+                    </td>
+                    <td>
+                      <img
+                        src={value.img}
+                        alt=""
+                        style={{ width: "100px", height: "100px" }}
+                      />
+                      
+                    </td>
+                    <td align="center" valign="middle">
+                      {value.price}
+                    </td>
+                    <td align="center" valign="middle">
+                      <button
+                        onClick={() => deleteFun(index)}
+                        className="btn btn-close"
+                      ></button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* search canvas */}
@@ -326,7 +394,7 @@ function Header_nav() {
       </div>
 
       {/* cart canvas */}
-      <div className="offcanvas offcanvas-end" id="cart-canvas">
+      <div className="offcanvas offcanvas-top" id="cart-canvas" style={{height:"500px"}}>
         <div className="offcanvas-header">
           <h1>cart</h1>
           <button
@@ -334,7 +402,57 @@ function Header_nav() {
             data-bs-dismiss="offcanvas"
           ></button>
         </div>
-        <div className="offcanvas-body">hi</div>
+        <div className="offcanvas-body">
+            <h3 style={{textAlign:"end"}}>total Price : ₹{price}</h3><br />
+          <table className="container table border-primary table-bordered text-center p-5 mt-2">
+              <thead>
+                <tr>
+                  <td>Product Name</td>
+                  <td>Product</td>
+                  <td>Price</td>
+                  <td>Qyantity</td>
+                  <td>Action</td>
+                  <td>remove</td>
+                </tr>
+              </thead>
+              <tbody>
+                {cartlist.map((value, index) => (
+                   <tr key={index}>
+                    {/* item */}
+                    <td align="center" valign="middle">
+                      {value.item}
+                    </td>
+                    {/* img */}
+                     <td align="center" valign="middle">
+                      <img src={value.img} alt="" style={{ width: "100px", height: "100px" }}/>
+                    </td>
+                    {/* price */}
+                    <td align="center" valign="middle">
+                      {value.price}
+                    </td>
+                    {/* price */}
+                    <td align="center" valign="middle">
+                      <span>{value.quantity}</span>
+                    </td>
+                    {/* action */}
+                    <td align="center" valign="middle">
+                      <button className="btn btn-success" onClick={()=>quanI(value.id)}>increase</button>&nbsp;
+                      <button className="btn btn-danger" onClick={()=>quand(value.id)}>decrease</button>
+                    </td>
+                    {/* remove */}
+                     <td align="center" valign="middle">
+                      <button
+                        onClick={() => deleteCart(index)}
+                        className="btn btn-close"
+                      ></button>
+                    </td>
+                  </tr>
+                ))
+                 
+                    }
+              </tbody>
+            </table>
+        </div>
       </div>
       {/* icons  react bootstrap offcanvas start */}
 
