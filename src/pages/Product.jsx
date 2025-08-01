@@ -5,7 +5,7 @@ import Mycontext from "../contextfile/Mycontext";
 
 function Product() {
   var { navid } = useParams();
-  var { likeFun } = useContext(Mycontext);
+  var { likeFun,cartFun } = useContext(Mycontext);
   const selectProduct = all_product.find((value) => value.id === Number(navid));
   return (
     <>
@@ -67,7 +67,7 @@ function Product() {
                   </button>
                   <br />
                 </div><br />
-                  <button type="button" className="mainbutton">
+                  <button type="button" className="mainbutton" onClick={()=>cartFun(selectProduct.id)}>
                     <span class="button__text">Add Item</span>
                     <span class="button__icon">
                       <svg
