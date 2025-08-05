@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Mycontext from "./Mycontext";
 import fashonboys from "../assets/images/fashon-boys-lineup.jpg";
 import { all_product } from "../assets/Image";
+
 // import { useParams } from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
 
@@ -106,8 +107,9 @@ function Context({ children }) {
   var[cartTab,setcartTab]=useState({})
   var[cartlist,setCartlist]=useState([])
   var[price,setPrice]=useState(0)
-
+// npm install party-js for popup shower
 const cartFun = (cartid) => {
+
   const cartProduct = all_product.find((value) => value.id === cartid) || {};
   setcartTab(cartProduct);
 

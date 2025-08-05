@@ -67,7 +67,7 @@ function Product() {
                   </button>
                   <br />
                 </div><br />
-                  <button type="button" className="mainbutton" onClick={()=>cartFun(selectProduct.id)}>
+                  <button type="button" className="mainbutton" onClick={(e)=>cartFun(selectProduct.id,e)}>
                     <span class="button__text">Add Item</span>
                     <span class="button__icon">
                       <svg

@@ -11,13 +11,23 @@ import {Navigation}from "swiper/modules"
 import "swiper/css/navigation"
 import { Autoplay } from 'swiper/modules';
 import Mycontext from "../../contextfile/Mycontext";
+import party from "party-js"
 
 
 function New_arrivals() {
   const navigate = useNavigate()
   var {likeFun,list,cartFun}=useContext(Mycontext)
+  const partyFun=(e)=>{
+     party.confetti(e.currentTarget,{
+        shapes:["circle","square","triangle"],
+        count:30,
+        size:1,
+        spread:5
+      })
+  }
   return (
     <>
+            <button  onClick={partyFun}>party</button>
       <div className="container">{/* container start */}
         {/* heroimg div  */}
         <div style={{

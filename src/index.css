@@ -960,3 +960,9 @@ iframe{
     text-align: justify;
 }
 }
+/* add to your global CSS for testing only */
+canvas {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  pointer-events: none !important;
+}
