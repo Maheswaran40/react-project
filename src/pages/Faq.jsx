@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 import blog1 from "../assets/images/blog_img1.png";
 import blog2 from "../assets/images/blog_img2.png";
 
 function Faq() {
   return (
     <>
-      <div className="container faq my-2">
+    <div className="container faq my-2">
         <h1>Menswear Maven: Fashion Finds for Every Occasion</h1>
         <br />
         <br />
@@ -31,7 +31,7 @@ function Faq() {
           <br />
           <br />
           <center>
-            <img src={blog2} alt="" height="400px" width="100%" />
+            <img src={blog2} alt="" id='blog2' />
           </center>
           <p style={{ fontSize: "medium",color:"black" }}>
             Phoebe and Peter in their Ridgewood home
@@ -96,8 +96,9 @@ function Faq() {
           </p>
         </div>
       </div>
+    
     </>
-  );
+  )
 }
 
-export default Faq;
+export default Faq

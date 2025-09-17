@@ -1,14 +1,13 @@
-// Context.jsx
 import React, { useState, useEffect } from "react";
 import Mycontext from "./Mycontext";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import fashonboys from "../assets/images/fashon-boys-lineup.jpg";
-import { all_product } from "../assets/Image";
-
-// import { useParams } from 'react-router-dom';
-// import { useNavigate } from 'react-router-dom';
 
 function Context({ children }) {
-  // const navigation=useNavigate()
+  const navigate = useNavigate();
+
   // about page function start
   const [activeTab, setActiveTab] = useState({
     title: "", //we send into object , so we create empty object in "activeTab" and get by calling "activeTab.values"
@@ -21,7 +20,7 @@ function Context({ children }) {
     setActiveTab({
       title: "Unveiling Your Unique Fashion Journey",
       img: fashonboys,
-      desc: "Welcome to ClipCart, where fashion meets individuality, and style is more than just clothing – it's a statement. Our passion for fashion drives us to curate a collection that celebrates diversity, embraces trends, and empowers you to express yourself through clothing.",
+      desc: "Welcome to Maxara, where fashion meets individuality, and style is more than just clothing – it's a statement. Our passion for fashion drives us to curate a collection that celebrates diversity, embraces trends, and empowers you to express yourself through clothing.",
       type: "about",
     });
   };
@@ -55,146 +54,197 @@ function Context({ children }) {
       },
     });
   };
-  // useeffect for rendering to the page ,default the aboutFun will show
+
+  // **************************************** PRODUCTS FETCH ****************************************
+  const url = "https://maxara-backend.onrender.com";
+  const viewFun = async () => {
+    try {
+      const databaseData = await axios.get(`${url}/list`);
+      setProductList(databaseData.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
-    aboutFun();
+    viewFun();
   }, []);
 
-  // search fun start
-
-  var [searchdata, setData] = useState();
-  function searchFun(e) {
+  // **************************************** SEARCH ****************************************
+  const [searchdata, setData] = useState("");
+  const searchFun = (e) => {
     e.preventDefault();
     console.log(searchdata);
-  }
-  function seacrhInput(e) {
+  };
+  const seacrhInput = (e) => {
     const input = e.target.value.toLowerCase();
     setData(input);
     console.log(input);
-  }
+  };
+
+  const [productList, setProductList] = useState([]);
   const filteredItems = searchdata
-    ? all_product.filter((value) =>
-        value.item.toLowerCase().includes(searchdata)
-      )
-    : "";
+    ? productList.filter((value) => {
+        if (value.category === "shop" || value.category === "newarrival")
+          return value.name?.toLowerCase().includes(searchdata);
+      })
+    : [];
+  console.log("searchdata:", searchdata);
+  console.log("filteredItems:", filteredItems);
 
-  // search fun end
-
-  // like start
-  var [liketab, setLiketab] = useState({});
-  var [list, setList] = useState([]);
-
-  var likeFun = (conid) => {
-    const product = all_product.find((value) => value.id === conid) || {};
+  // **************************************** LIKE ****************************************
+  const [liketab, setLiketab] = useState({});
+  const [list, setList] = useState([]);
+  const likeFun = (conid) => {
+    const product = productList.find((value) => value._id === conid) || {};
     setLiketab(product);
-    list.filter((item) => item.id === product.id).length === 0 &&
-      setList(list.concat(product));
-    alert("Added to wishlist");
-    console.log(list.length);
+    if (!list.some((item) => item._id === product._id)) {
+      setList([...list, product]);
+      toast.success("Added to wishlist ❤️");
+    } else {
+      toast.info("Already in wishlist 😉");
+    }
   };
-  useEffect(() => {
-    console.log("liketab updated:");
-  }, [liketab]);
+  const deleteFun = (index) => setList(list.filter((_, i) => i !== index));
 
-  // delete liked product
-  const deleteFun = (index) => {
-    setList(list.filter((value, i) => i !== index));
-  };
+  // **************************************** CART ****************************************
+  const [cartTab, setcartTab] = useState({});
+  const [cartlist, setCartlist] = useState([]);
+  const [price, setPrice] = useState(0);
 
-  // like end
+  const cartFun = (cartid) => {
+    const cartProduct = productList.find((value) => value._id === cartid) || {};
+    setcartTab(cartProduct);
 
-  // cartfun start
-  var[cartTab,setcartTab]=useState({})
-  var[cartlist,setCartlist]=useState([])
-  var[price,setPrice]=useState(0)
-// npm install party-js for popup shower
-const cartFun = (cartid) => {
-
-  const cartProduct = all_product.find((value) => value.id === cartid) || {};
-  setcartTab(cartProduct);
-
-  const alreadyInCart = cartlist.some((item) => item.id === cartProduct.id);
-  if (!alreadyInCart) {
+    if (!cartlist.some((item) => item._id === cartProduct._id)) {
       const newItem = { ...cartProduct, quantity: 1 };
-    const updatedCartlist = [...cartlist, newItem];
+      const updatedCartlist = [...cartlist, newItem];
+      setCartlist(updatedCartlist);
+
+      const total = updatedCartlist.reduce((sum, item) => {
+        const cleanPrice = Number(
+          String(item.price).replace(/[^0-9.]/g, "") || 0
+        );
+        return sum + cleanPrice * item.quantity;
+      }, 0);
+      setPrice(total);
+
+      toast.success("Added to cart");
+    } else {
+      toast.info("Product already in cart");
+    }
+  };
+
+  const deleteCart = (index) => {
+    const updatedCartlist = cartlist.filter((_, i) => i !== index);
     setCartlist(updatedCartlist);
 
     const total = updatedCartlist.reduce((sum, item) => {
-      const cleanPrice = Number(String(item.price).replace(/[^0-9.]/g, '') || 0);
+      const cleanPrice = Number(
+        String(item.price).replace(/[^0-9.]/g, "") || 0
+      );
       return sum + cleanPrice * item.quantity;
     }, 0);
     setPrice(total);
+  };
 
-    alert("Added to cart");
-  } else {
-    alert("Product already in cart");
-  }
-};
-// remove function
-const deleteCart = (index) => {
-  // Step 1: Remove the item
-  const updatedCartlist = cartlist.filter((value, i) => i !== index);
-  setCartlist(updatedCartlist);
+  const quanI = (id) => {
+    const updatedCart = cartlist.map((item) =>
+      item._id === id ? { ...item, quantity: item.quantity + 1 } : item
+    );
+    setCartlist(updatedCart);
 
-  // Step 2: Recalculate price
-  const newTotal = updatedCartlist.reduce((sum, item) => {
-    const cleanPrice = Number(String(item.price).replace(/[^0-9.]/g, '') || 0);
-    return sum + cleanPrice;
-  }, 0);
-  setPrice(newTotal);
-};
+    const total = updatedCart.reduce((sum, item) => {
+      const cleanPrice = Number(
+        String(item.price).replace(/[^0-9.]/g, "") || 0
+      );
+      return sum + cleanPrice * item.quantity;
+    }, 0);
+    setPrice(total);
+  };
 
-  useEffect(() => {
-    console.log("cartTab updated:");
-  }, [cartTab]);
+  const quand = (id) => {
+    const updatedCart = cartlist.map((item) =>
+      item._id === id && item.quantity > 1
+        ? { ...item, quantity: item.quantity - 1 }
+        : item
+    );
+    setCartlist(updatedCart);
 
+    const total = updatedCart.reduce((sum, item) => {
+      const cleanPrice = Number(
+        String(item.price).replace(/[^0-9.]/g, "") || 0
+      );
+      return sum + cleanPrice * item.quantity;
+    }, 0);
+    setPrice(total);
+  };
 
-  // cartfun end
+  const [rangevalue, setRangevalue] = useState(1500);
 
-  // quantity increase start
-  function quanI(id) {
-  const updatedCart = cartlist.map((item) => {
-    if (item.id === id) {
-      return { ...item, quantity: item.quantity + 1 };
+  // **************************************** USER FORM ****************************************
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const userformFun = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = { username, email, password };
+      await axios.post(
+        "https://maxara-backend.onrender.com/userData",
+        formData
+      );
+      toast.success("Your data registered successfully...");
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      navigate("/");
+    } catch (err) {
+       // ✅ Handle duplicate error cleanly
+    if (err.response?.status === 400 && err.response?.data?.message) {
+      toast.error(err.response.data.message); // shows "Email already exists"
+    } else {
+      toast.error("Email already exist");
     }
-    return item;
-  });
-  setCartlist(updatedCart);
-
-  // Recalculate total price
-  const total = updatedCart.reduce((sum, item) => {
-    const cleanPrice = Number(String(item.price).replace(/[^0-9.]/g, '') || 0);
-    return sum + cleanPrice * item.quantity;
-  }, 0);
-  setPrice(total);
-}
-// decrease
-  function quand(id) {
-  const updatedCart = cartlist.map((item) => {
-    if (item.id === id && item.quantity > 1) {
-      return { ...item, quantity: item.quantity - 1 };
+      console.log("Form posting error:", err);
     }
-    return item;
-  });
-  setCartlist(updatedCart);
+  };
+  // user data get method
+  var [userData, setUserData] = useState([]);
+  var [loginName, setLoginName] = useState("");
+  var [loginPassword, setLoginPassword] = useState("");
+  const getUser = async (e) => {
+    e.preventDefault();
+    try {
+      const databaseData = await axios.get(`${url}/getUser`);
+       const users = databaseData.data;
+       const foundUser = users.find((u) => u.email === loginName && u.password === loginPassword);
 
-  // recalculate total
-  const total = updatedCart.reduce((sum, item) => {
-    const cleanPrice = Number(String(item.price).replace(/[^0-9.]/g, '') || 0);
-    return sum + cleanPrice * item.quantity;
-  }, 0);
-  setPrice(total);
-}
+        if (foundUser) {
+      console.log("✅ Login successful", foundUser);
 
+      setUserData(foundUser);
+      // navigate to home (uncomment if you imported useNavigate in Form)
+       localStorage.setItem("isLoggedIn", "true");  // 🔥 must be string
+      navigate("/home");
+    } else {
+      alert("❌ Invalid Email or Password");
+    }
+      setUserData(databaseData.data);
+      console.log(databaseData.data);
+      console.log(loginName);
+      console.log(loginPassword);
+      
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  // quantity increase end
+  // 👇 add this back, near your other states
+  const [pro3selectedId, pro3setSelectedId] = useState(null);
 
+  // **************************************** CONTEXT VALUE ****************************************
   const mycontextValue = {
-    activeTab,
-    missionFun,
-    connectFun,
-    aboutFun,
-    storyFun,
     searchFun,
     seacrhInput,
     filteredItems,
@@ -204,8 +254,34 @@ const deleteCart = (index) => {
     liketab,
     list,
     deleteFun,
-    cartFun,cartlist,
-    deleteCart,price,quanI,quand
+    cartFun,
+    cartlist,
+    deleteCart,
+    price,
+    quanI,
+    quand,
+    productList,
+    cartTab,
+    userformFun,
+    setUsername,
+    setEmail,
+    setPassword,
+    username,
+    email,
+    password,
+    rangevalue,
+    setRangevalue,
+    pro3selectedId,
+    pro3setSelectedId,
+    activeTab,
+    aboutFun,
+    storyFun,
+    missionFun,
+    connectFun,
+    userData,
+    getUser,
+    setLoginName,
+    setLoginPassword,loginName,loginPassword
   };
 
   return (

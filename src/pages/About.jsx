@@ -15,8 +15,7 @@ function About() {
           style={{ height: "200px" }}
         >
           <h1 className="container text-white text-center">
-            Discover the Art of Dressing Where Every Stitch Tells a Story and
-            Every Outfit Paints a Picture
+            Discover the Spirit of Sportswear : Where Every Fabric Fuels Performance and Every Outfit Defines Your Game.
           </h1>
         </div>
         <br />
@@ -24,7 +23,7 @@ function About() {
           <div className="row" id="about-button-div">
             <div className="col-lg-3 col-md-6 col-sm -6">
             <button className="border-0 bg-white" onClick={aboutFun} style={{color:activeTab.type ==="about" ? "#E52020":"gray"}}>
-              About ClipCart
+              About Maxara
             </button>
             </div>
             <div className="col-lg-3 col-md-6 col-sm-6">
