@@ -167,11 +167,11 @@ function Header_nav() {
               className="form-control"
               onChange={seacrhInput}
             />
-            <input
+            <button
               type="submit"
               className=" btn"
-              style={{ backgroundColor: "blue", color: "white" }}
-            />
+              style={{ backgroundColor: "blue", color: "white",height:"49px" }}
+            ><i className="fa-solid fa-magnifying-glass nav-icon pe-2"></i></button>
           </form>
           <br />
           {!searchdata ? (
@@ -439,40 +439,53 @@ function Header_nav() {
       </div> */}
 
       {/* like model */}
-      <div
-        className="offcanvas offcanvas-top"
-        id="like-canvas"
-        style={{ height: "500px" }}
-      >
-        <div className="offcanvas-header">
-          <h1>Liked Product List</h1>
-          <button
-            className="btn btn-close"
+     {/* like model */}
+<div
+  className="offcanvas offcanvas-top"
+  id="like-canvas"
+  style={{ height: "500px" }}
+>
+  <div className="offcanvas-header">
+    <h1>Liked Product List</h1>
+    <button
+      className="btn btn-close"
+      data-bs-dismiss="offcanvas"
+    ></button>
+  </div>
+
+  <div className="offcanvas-body container">
+    {list && list.length > 0 ? (
+      list.map((value, index) => (
+        <div key={index} className="wishlist-card">
+          <div
+            className="wishlist-img"
+            onClick={() => navigate(`/shop/${value._id}`)}
             data-bs-dismiss="offcanvas"
-          ></button>
+          >
+            <img src={value.url} alt={value.name} />
+          </div>
+          <div className="wishlist-info">
+            <h4>{value.name}</h4>
+            <p className="price">
+              ₹{value.price.toLocaleString("en-IN")}
+            </p>
+          </div>
+          <div>
+            <button
+              onClick={() => deleteFun(index)}
+              className="wishlist-remove"
+            >
+              ✕
+            </button>
+          </div>
         </div>
-        <div className="offcanvas-body container">
-          {list.map((value, index) => (
-            <div key={index} className="wishlist-card">
-              <div className="wishlist-img" onClick={() => navigate(`/shop/${value._id}`)} data-bs-dismiss="offcanvas">
-                <img src={value.url} alt={value.name} />
-              </div>
-              <div className="wishlist-info">
-                <h4>{value.name}</h4>
-                <p className="price">₹{value.price.toLocaleString("en-IN")}</p>
-              </div>
-              <div>
-                <button
-                  onClick={() => deleteFun(index)}
-                  className="wishlist-remove"
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      ))
+    ) : (
+      <h5 className="text-center text-capitalize">Your wishlist is empty</h5>
+    )}
+  </div>
+</div>
+
 
       {/* cart canvas */}
       <div
@@ -491,7 +504,7 @@ function Header_nav() {
           <h3 style={{ textAlign: "end" }}>Total Price : ₹{price}</h3>
           <br />
 
-          {cartlist.map((value, index) => (
+          {cartlist && cartlist.length > 0 ? (cartlist.map((value, index) => (
             <div key={index} className="cart-card">
               {/* Product Image */}
               <div className="cart-img" data-bs-dismiss="offcanvas">
@@ -523,7 +536,7 @@ function Header_nav() {
                 </button>
               </div>
             </div>
-          ))}
+          )) ): <h5 className="text-center text-capitalize"> your cart list is Empty</h5>}
         </div>
 
         {/* <table className="container table border-primary table-bordered text-center p-5 mt-2">
