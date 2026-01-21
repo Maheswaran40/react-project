@@ -54,7 +54,7 @@ function App() {
           </a>
       </div>
       </BrowserRouter>
-        </Context>
+    </Context>
           
     </>
   )
